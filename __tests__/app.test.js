@@ -31,8 +31,8 @@ return request(app)
     expect(topics).toBeInstanceOf(Array)
         expect(topics).toHaveLength(3);
     topics.forEach((topic) => {
-        expect(topic.slug).not.toBe(undefined)
-        expect(topic.description).not.toBe(undefined)
+        expect(typeof topic.slug).toBe('string')
+        expect(typeof topic.description).toBe('string')
     })
    
 })

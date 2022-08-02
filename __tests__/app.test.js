@@ -37,6 +37,39 @@ return request(app)
    
 })
 })
-
-
 })
+describe('GET article by id', () => {
+    test('returns status 404 when id not found ', () => {
+        return request(app)
+        .get('/api/articles/99')
+        .expect(404)
+       })
+       test('returns status 400 when given invalid id ', () => {
+        return request(app)
+        .get('/api/articles/test')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad Request');
+        })
+       })
+    test('returns the desired article information', () => {
+    return request(app)
+    .get('/api/articles/1')
+    .expect(200)
+    .then(({ body: {articles} }) => {
+        expect(articles).toBeInstanceOf(Array)
+        expect(typeof articles[0].author).toBe('string')
+        expect(typeof articles[0].title).toBe('string')
+        expect(typeof articles[0].article_id).toBe('number')
+        expect(typeof articles[0].body).toBe('string')
+        expect(typeof articles[0].topic).toBe('string')
+        expect(typeof articles[0].created_at).toBe('string')
+        expect(typeof articles[0].votes).toBe('number')
+        
+      
+    })
+
+
+        })
+       
+    })

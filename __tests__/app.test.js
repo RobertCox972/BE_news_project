@@ -10,6 +10,9 @@ beforeEach(() => {
 
    
    afterAll(() => { db.end()});
+
+
+
    describe('Returns 404 for unknown endpoint', () => {
 test('Returns 404', () => {
     return request(app)
@@ -20,35 +23,20 @@ test('Returns 404', () => {
 
 
 describe('GET api/topics', () => {
-test('Returns a 200 status code', () => {
+test('returns the desired status code and array object ', () => {
 return request(app)
 .get('/api/topics/')
 .expect(200)
-
-})
-
-test('Returns an Array with a length of 3 as expected.', () => {
-    return request(app)
-    .get('/api/topics/')
-    .expect(200)
-    .then(({ body: {topics} }) => {
-        expect(topics).toBeInstanceOf(Array)
+.then(({ body: {topics} }) => {
+    expect(topics).toBeInstanceOf(Array)
         expect(topics).toHaveLength(3);
-  
+    topics.forEach((topic) => {
+        expect(topic.slug).not.toBe(undefined)
+        expect(topic.description).not.toBe(undefined)
     })
    
-    })
+})
+})
 
-    test('Returns an object with a key of slug and a key of description', () => {
-        return request(app)
-        .get('/api/topics/')
-        .expect(200)
-        .then(({ body: {topics} }) => {
-            topics.forEach((topic) => {
-                expect(topic.slug).not.toBe(undefined)
-                expect(topic.description).not.toBe(undefined)
-            })
-           
-        })
-        })
+
 })

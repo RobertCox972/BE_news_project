@@ -71,5 +71,42 @@ describe('GET article by id', () => {
 
 
         })
+        describe('PATCH inc_votes by ID', () => {
+            describe('PATCH inc_votes by ID', () => {
+                test('returns status 404 when id not found ', () => {
+                    return request(app)
+                    .patch('/api/articles/99')
+                    .expect(404)
+                   })
+                })
+                test('returns status 400 when given invalid id ', () => {
+                    return request(app)
+                    .patch('/api/articles/test')
+                    .expect(400)
+                    .then(({ body }) => {
+                        expect(body.msg).toBe('Bad Request');
+                    })
+                })
+                    test('returns status 400 when given invalid vote increment ', () => {
+                        return request(app)
+                        .patch('/api/articles/1')
+                        .send({inc_votes : test})
+                        .expect(400)
+                        .then(({ body }) => {
+                            expect(body.msg).toBe('Bad Request');
+                        })
+                   })
+            test('Increments the vote by the given inc_votes ', () => {
+                return request(app)
+                .patch('/api/articles/1')
+                .send({inc_votes : 18})
+                .expect(201)
+                .then(({ body: {articles, article}}) => {
+                    expect(article).toBeInstanceOf(Array)
+                    expect(article[0].article_id).toBe(1)
+                    expect(article[0].votes).toBe(118)
+                })
+               })
+            })
        
     })

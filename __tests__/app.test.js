@@ -44,7 +44,6 @@ describe('GET users', () => {
     .get('/api/users/')
     .expect(200)
     .then(({ body: {users} }) => {
-        console.log(users);
         expect(users).toBeInstanceOf(Array)
         users.forEach((user) => {
             expect(user).toBeInstanceOf(Object)
@@ -120,7 +119,6 @@ describe('GET article by id', () => {
                 .send({inc_votes : 18})
                 .expect(201)
                 .then(({ body: {article}}) => {
-                    console.log(article)
                     expect(article).toBeInstanceOf(Object)
                     expect(article.article_id).toBe(1)
                     expect(article.votes).toBe(118)

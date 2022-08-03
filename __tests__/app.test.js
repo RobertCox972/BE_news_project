@@ -38,6 +38,24 @@ return request(app)
 })
 })
 })
+describe('GET users', () => {
+    test('returns the desired status code and array of objects ', () => {
+    return request(app)
+    .get('/api/users/')
+    .expect(200)
+    .then(({ body: {users} }) => {
+        console.log(users);
+        expect(users).toBeInstanceOf(Array)
+        users.forEach((user) => {
+            expect(user).toBeInstanceOf(Object)
+            expect(typeof user.username).toBe('string')
+            expect(typeof user.name).toBe('string')
+            expect(typeof user.avatar_url).toBe('string')
+
+        })
+    })
+    })
+    })
 describe('GET article by id', () => {
     test('returns status 404 when id not found ', () => {
         return request(app)
@@ -57,21 +75,21 @@ describe('GET article by id', () => {
     .get('/api/articles/1')
     .expect(200)
     .then(({ body: {articles} }) => {
-        expect(articles).toBeInstanceOf(Array)
-        expect(typeof articles[0].author).toBe('string')
-        expect(typeof articles[0].title).toBe('string')
-        expect(typeof articles[0].article_id).toBe('number')
-        expect(typeof articles[0].body).toBe('string')
-        expect(typeof articles[0].topic).toBe('string')
-        expect(typeof articles[0].created_at).toBe('string')
-        expect(typeof articles[0].votes).toBe('number')
+        expect(articles).toBeInstanceOf(Object)
+        expect(typeof articles.author).toBe('string')
+        expect(typeof articles.title).toBe('string')
+        expect(typeof articles.article_id).toBe('number')
+        expect(typeof articles.body).toBe('string')
+        expect(typeof articles.topic).toBe('string')
+        expect(typeof articles.created_at).toBe('string')
+        expect(typeof articles.votes).toBe('number')
         
       
     })
 
 
         })
-        describe('PATCH inc_votes by ID', () => {
+       
             describe('PATCH inc_votes by ID', () => {
                 test('returns status 404 when id not found ', () => {
                     return request(app)
@@ -90,7 +108,7 @@ describe('GET article by id', () => {
                     test('returns status 400 when given invalid vote increment ', () => {
                         return request(app)
                         .patch('/api/articles/1')
-                        .send({inc_votes : test})
+                        .send({inc_votes : 'test'})
                         .expect(400)
                         .then(({ body }) => {
                             expect(body.msg).toBe('Bad Request');
@@ -101,12 +119,13 @@ describe('GET article by id', () => {
                 .patch('/api/articles/1')
                 .send({inc_votes : 18})
                 .expect(201)
-                .then(({ body: {articles, article}}) => {
-                    expect(article).toBeInstanceOf(Array)
-                    expect(article[0].article_id).toBe(1)
-                    expect(article[0].votes).toBe(118)
+                .then(({ body: {article}}) => {
+                    console.log(article)
+                    expect(article).toBeInstanceOf(Object)
+                    expect(article.article_id).toBe(1)
+                    expect(article.votes).toBe(118)
                 })
                })
             })
        
-    })
+

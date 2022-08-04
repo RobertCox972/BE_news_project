@@ -75,14 +75,14 @@ describe('GET article by id', () => {
     .expect(200)
     .then(({ body: {articles} }) => {
         expect(articles).toBeInstanceOf(Object)
-        expect(typeof articles.author).toBe('string')
-        expect(typeof articles.title).toBe('string')
-        expect(typeof articles.article_id).toBe('number')
-        expect(typeof articles.body).toBe('string')
-        expect(typeof articles.topic).toBe('string')
-        expect(typeof articles.created_at).toBe('string')
-        expect(typeof articles.votes).toBe('number')
-        expect(typeof articles.comment_count).toBe('number')
+        expect(articles.author).toBe('butter_bridge')
+        expect(articles.title).toBe('Living in the shadow of a great man')
+        expect(articles.article_id).toBe(1)
+        expect(articles.body).toBe('I find this existence challenging')
+        expect(articles.topic).toBe('mitch')
+        expect(articles.created_at).toBe('2020-07-09T20:11:00.000Z')
+        expect(articles.votes).toBe(100)
+        expect(articles.comment_count).toBe(11)
         
         
       

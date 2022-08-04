@@ -23,7 +23,7 @@ exports.selectArticle  = (article_id) => {
     ON articles.article_id = comments.article_id
     WHERE articles.article_id = $1 GROUP BY articles.article_id;`, [article_id])
     .then(({ rows: [articles] }) => {
-        console.log(articles)
+    
     
         if (articles === undefined){
      
@@ -47,5 +47,23 @@ exports.patchArticle  = (article_id, voteChange) => {
                 
         return rows;
             })
+    })
+}
+
+exports.selectArticles  = () => {
+    return db 
+    .query(`SELECT COUNT (*)::int AS comment_count, articles.author, articles.title,
+     articles.article_id, articles.body, articles.topic, articles.created_at, articles.votes 
+     FROM articles
+    LEFT JOIN comments
+    ON articles.article_id = comments.article_id
+     GROUP BY articles.article_id ORDER BY articles.created_at DESC;`)
+    .then(({ rows: articles }) => {
+        if (articles < 1){
+     
+            return Promise.reject({status: 404})
+        }
+
+        return articles
     })
 }

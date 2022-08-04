@@ -2,7 +2,8 @@ const app = require("../app.js");
 const db = require("../db/connection");
 const request = require("supertest");
 const seed = require("../db/seeds/seed.js");
-const testData = require("../db/data/test-data/")
+const testData = require("../db/data/test-data/");
+const { expect } = require("@jest/globals");
 
 beforeEach(() => {
     return seed(testData);
@@ -126,6 +127,30 @@ describe('GET article by id', () => {
                })
             })
         })
-        
+        describe('GET articles', () => {
+            test('returns the desired status code and array object properties ', () => {
+            return request(app)
+            .get('/api/articles/')
+            .expect(200)
+            .then(({ body: {articles} }) => {
+                expect(articles).toBeInstanceOf(Array)
+                expect(articles.length).toBe(12)
+                articles.forEach((article) => {
+                    expect(article).toBeInstanceOf(Object)
+                    expect(typeof article.author).toBe('string')
+                    expect(typeof article.title).toBe('string')
+                    expect(typeof article.article_id).toBe('number')
+                    expect(typeof article.body).toBe('string')
+                    expect(typeof article.topic).toBe('string')
+                    expect(typeof article.created_at).toBe('string')
+                    expect(typeof article.votes).toBe('number')
+                    expect(typeof article.comment_count).toBe('number')
+                })
+                expect(articles).toBeSortedBy('created_at', {
+                    descending: true
+                  });
+            })
+            })
+            })
        
 

@@ -1,4 +1,4 @@
-const { selectTopics, selectArticle, selectUsers, patchArticle, selectArticles } = require('../models/app.models')
+const { selectTopics, selectArticle, selectUsers, patchArticle, selectArticles, selectArticleComments } = require('../models/app.models')
 
 
 
@@ -18,6 +18,12 @@ exports.getArticleById = (req, res, next) => {
     })
 .catch((err) => { next(err);})
     }
+    exports.getArticleComments = (req, res, next) => {
+        selectArticleComments(req.params.article_id).then((comments) => {
+            res.status(200).send({ comments: comments})
+        })
+    .catch((err) => { next(err);})
+        }
     exports.patchArticleVote = (req, res, next) => {
 
     patchArticle(req.params.article_id, req.body).then((article) => {

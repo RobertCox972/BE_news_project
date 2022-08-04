@@ -71,12 +71,6 @@ exports.selectArticleComments  = (article_id) => {
     return db 
     .query(`SELECT * FROM comments WHERE article_id = $1;`, [article_id])
     .then(({ rows: comments }) => {
-    
-    
-        if (comments < 1){
-     
-            return Promise.reject({status: 404})
-        }
 
         return comments
     })

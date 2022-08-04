@@ -82,12 +82,12 @@ describe('GET article by id', () => {
         expect(typeof articles.topic).toBe('string')
         expect(typeof articles.created_at).toBe('string')
         expect(typeof articles.votes).toBe('number')
+        expect(typeof articles.comment_count).toBe('number')
+        
         
       
     })
-
-
-        })
+})
        
             describe('PATCH inc_votes by ID', () => {
                 test('returns status 404 when id not found ', () => {
@@ -95,7 +95,7 @@ describe('GET article by id', () => {
                     .patch('/api/articles/99')
                     .expect(404)
                    })
-                })
+                
                 test('returns status 400 when given invalid id ', () => {
                     return request(app)
                     .patch('/api/articles/test')
@@ -125,5 +125,7 @@ describe('GET article by id', () => {
                 })
                })
             })
+        })
+        
        
 

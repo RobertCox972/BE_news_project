@@ -75,3 +75,15 @@ exports.selectArticleComments  = (article_id) => {
         return comments
     })
 }
+exports.postArticleComment  = (article_id, comment) => {
+    return db 
+    .query(`INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) returning *;`, [article_id, comment.username, comment.body])
+    .then(({ rows: comment }) => {
+if (comment === undefined)
+{
+    return Promise.reject({status: 404})
+}
+        return comment
+    
+})
+}

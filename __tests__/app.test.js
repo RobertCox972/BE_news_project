@@ -163,7 +163,7 @@ describe('GET article by id', () => {
                    })
                    test('returns status 200 and an empty array when an article has no comments ', () => {
                     return request(app)
-                    .get('/api/articles/4/comments')
+                    .get('/api/articles/999/comments')
                     .expect(200)
                     .then(({ body: {comments} }) => {
                         expect(comments).toEqual([]);
@@ -187,5 +187,39 @@ describe('GET article by id', () => {
                 })
                 })
                 })
+                describe('POST article comments', () => {
+                    test('returns status 400 when given invalid id ', () => {
+                     return request(app)
+                     .post('/api/articles/test/comments')
+                     .expect(400)
+                     .then(({ body }) => {
+                         expect(body.msg).toBe('Bad Request');
+                     })
+                    })
+                    test('returns status 400 and an empty array when the given id is not found ', () => {
+                        return request(app)
+                        .post('/api/articles/99/comments')
+                        .expect(400)
+                       })
+                 test('returns the desired status code and array object properties ', () => {
+                 return request(app)
+                 .post('/api/articles/3/comments')
+                 .send({username : 'butter_bridge', body : 'Body of sample text?!! 1 + 2'})
+                 .expect(201)
+                 .then(({ body: {comment} }) => {
+                     expect(comment).toBeInstanceOf(Array)
+                     expect(comment.length).toBe(1)
+                     comment.forEach((comment) => {
+                         expect(comment).toBeInstanceOf(Object)
+                         expect(typeof comment.comment_id).toBe('number')
+                         expect(typeof comment.votes).toBe('number')
+                         expect(typeof comment.created_at).toBe('string')
+                         expect(typeof comment.author).toBe('string')
+                         expect(typeof comment.body).toBe('string')
+                     })
+                 })
+                 })
+                 })
+                 
        
 

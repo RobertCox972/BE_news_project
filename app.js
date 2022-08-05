@@ -1,4 +1,4 @@
-const { getTopics, getArticleById, patchArticleVote, getUsers, getArticles, getArticleComments } = require("./controllers/app.controllers")
+const { getTopics, getArticleById, patchArticleVote, getUsers, getArticles, getArticleComments, postArticleComment } = require("./controllers/app.controllers")
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -17,6 +17,7 @@ app.get("/api/articles", getArticles)
 
 app.patch("/api/articles/:article_id", patchArticleVote)
 
+app.post("/api/articles/:article_id/comments", postArticleComment)
 
 app.all("/*", (req, res) => {
     res.status(404)
@@ -24,8 +25,12 @@ app.all("/*", (req, res) => {
 })
 
 app.use((err, req, res, next) => {
-    if (err.code === '22P02' || err.code === '23502') {
+  
+    if (err.code === '22P02') {
         res.status(400).send({msg: 'Bad Request'})
+    }
+    if (err.code === '23502' || err.code === '23503') {
+        res.status(404).send({msg: 'Not found'})
     }
     else 
 {

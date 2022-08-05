@@ -191,6 +191,7 @@ describe('GET article by id', () => {
                     test('returns status 400 when given invalid id ', () => {
                      return request(app)
                      .post('/api/articles/test/comments')
+                     .send({username : 'butter_bridge', body : 'Body of sample text?!! 1 + 2'})
                      .expect(400)
                      .then(({ body }) => {
                          expect(body.msg).toBe('Bad Request');
@@ -199,6 +200,7 @@ describe('GET article by id', () => {
                     test('returns status 404 when the given id is not found ', () => {
                         return request(app)
                         .post('/api/articles/99/comments')
+                        .send({username : 'butter_bridge', body : 'Body of sample text?!! 1 + 2'})
                         .expect(404)
                        })
                        test('returns status 404 when the given username is not found ', () => {
@@ -206,6 +208,18 @@ describe('GET article by id', () => {
                         .post('/api/articles/99/comments')
                         .send({username : 'test_name', body : 'Body of sample text?!! 1 + 2'})
                         .expect(404)
+                       })
+                       test('returns 400 for post body not containing a comment key/value', () => {
+                        return request(app)
+                        .post('/api/articles/3/comments')
+                        .send({username : 'test_name'})
+                        .expect(400)
+                       })
+                       test('returns 400 for post body not containing a username key/value', () => {
+                        return request(app)
+                        .post('/api/articles/3/comments')
+                        .send({body : 'Body of sample text?!! 1 + 2'})
+                        .expect(400)
                        })
                  test('returns the desired status code and array object properties ', () => {
                  return request(app)

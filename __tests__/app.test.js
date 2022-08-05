@@ -163,7 +163,7 @@ describe('GET article by id', () => {
                    })
                    test('returns status 200 and an empty array when an article has no comments ', () => {
                     return request(app)
-                    .get('/api/articles/999/comments')
+                    .get('/api/articles/4/comments')
                     .expect(200)
                     .then(({ body: {comments} }) => {
                         expect(comments).toEqual([]);

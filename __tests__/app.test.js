@@ -196,10 +196,16 @@ describe('GET article by id', () => {
                          expect(body.msg).toBe('Bad Request');
                      })
                     })
-                    test('returns status 400 and an empty array when the given id is not found ', () => {
+                    test('returns status 404 when the given id is not found ', () => {
                         return request(app)
                         .post('/api/articles/99/comments')
-                        .expect(400)
+                        .expect(404)
+                       })
+                       test('returns status 404 when the given username is not found ', () => {
+                        return request(app)
+                        .post('/api/articles/99/comments')
+                        .send({username : 'test_name', body : 'Body of sample text?!! 1 + 2'})
+                        .expect(404)
                        })
                  test('returns the desired status code and array object properties ', () => {
                  return request(app)

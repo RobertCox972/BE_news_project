@@ -33,7 +33,7 @@ exports.getArticleById = (req, res, next) => {
         .catch((err) => { next(err);})
     }
     exports.getArticles = (req, res) => {
-        selectArticles().then((articles) => {
+        selectArticles(req.query.sort_by, req.query.order, req.query.topic ).then((articles) => {
             res.status(200).send({ articles: articles})
         })
         }
@@ -41,6 +41,6 @@ exports.getArticleById = (req, res, next) => {
             postArticleComment(req.params.article_id, req.body).then((comment) => {
                 res.status(201).send({ comment: comment}) 
             })
-        .catch((err) => {  next(err);})
+        .catch((err) => {console.log(err.code),  next(err);})
             }
     

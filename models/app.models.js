@@ -50,14 +50,14 @@ exports.patchArticle  = (article_id, voteChange) => {
     })
 }
 
-exports.selectArticles  = () => {
+exports.selectArticles  = (sort) => {
+
     return db 
     .query(`SELECT COUNT (*)::int AS comment_count, articles.author, articles.title,
-     articles.article_id, articles.body, articles.topic, articles.created_at, articles.votes 
-     FROM articles
-    LEFT JOIN comments
-    ON articles.article_id = comments.article_id
-     GROUP BY articles.article_id ORDER BY articles.created_at DESC;`)
+    articles.article_id, articles.body, articles.topic, articles.created_at, articles.votes 
+    FROM articles
+   LEFT JOIN comments
+   ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY articles.created_at DESC;`)
     .then(({ rows: articles }) => {
         if (articles < 1){
      
@@ -76,15 +76,16 @@ exports.selectArticleComments  = (article_id) => {
     })
 }
 exports.postArticleComment  = (article_id, comment) => {
-    console.log(comment.body) 
+
     if (comment.body === undefined || comment.username === undefined)
      {
-        console.log('in the if')
+
         return Promise.reject({status: 400})
      }
     return db 
     .query(`INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) returning *;`, [article_id, comment.username, comment.body])
     .then(({ rows: comment }) => {
+        
 
         return comment
     

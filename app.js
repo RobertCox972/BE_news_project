@@ -2,6 +2,7 @@ const { getTopics, getArticleById, patchArticleVote, getUsers, getArticles, getA
 const express = require("express");
 const app = express();
 app.use(express.json());
+const format = require('pg-format');
  
 
 
@@ -25,7 +26,6 @@ app.all("/*", (req, res) => {
 })
 
 app.use((err, req, res, next) => {
-  
     if (err.code === '22P02') {
         res.status(400).send({msg: 'Bad Request'})
     }

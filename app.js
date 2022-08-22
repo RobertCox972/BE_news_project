@@ -13,6 +13,9 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const format = require('pg-format');
+const cors = require('cors');
+
+app.use(cors());
 
 app.get('/api/topics/', getTopics);
 
